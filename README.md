@@ -14,7 +14,7 @@ pip install justpaid
 from justpaid import JustPaidAPI
 
 # Initialize the API client
-api = JustPaidAPI("https://api.justpaid.io", "your_api_token_here")
+api = JustPaidAPI(api_token="your_api_token_here")
 
 # Get billable items
 items = api.get_billable_items()
