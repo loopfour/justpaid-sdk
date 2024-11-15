@@ -36,6 +36,8 @@ class UsageEventResponse(BaseModel):
 class BillableItem(BaseModel):
     item_id: str = Field(..., description="The unique identifier for the item.")
     item_name: str = Field(..., description="The name of the item, typically describing what the billable item is about.")
+    billing_alias: Optional[str] = Field(None, description="The billing alias for the item, this is the name that will be used to calculate the billing amount for the customer.")
+    
 
 class BillableItemCustomer(BaseModel):
     customer_id: str

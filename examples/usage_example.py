@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import uuid
 
 # Initialize the API with your token
-api = JustPaidAPI(api_token="YOUR_API_TOKEN")
+api = JustPaidAPI(api_token="bk12MVBZMWRSdVJuN0M1Q2FzdnNmczRrMEJKNGV3VFpvSjU2WFIzcWsxbyA1OGNiZDEyMC03NGRlLTQ5MmItYjgwZi1hNGM1OTQ0Zjk0ZDg=")
 
 try:
     # Get billable items
@@ -16,19 +16,19 @@ try:
     for customers in billable_items_response.customers:
         print(f"Customer: {customers.customer_id}")
         for item in customers.items:
-            print(f"  - Item: {item.item_name} (ID: {item.item_id})")
+            print(f"  - Item: {item.item_name} (ID: {item.item_id}) {item.billing_alias}")
 
     # Use the first item_id from the response
     if billable_items_response.customers[0].items:
         customer_id = billable_items_response.customers[0].customer_id
         item = billable_items_response.customers[0].items[0]
         item_id = item.item_id
-        item_name = item.item_name
+        evnet_name = item.billing_alias
 
         # Create a usage event
         event = UsageEvent(
             customer_id=customer_id,
-            event_name=item_name,
+            event_name=evnet_name,
             timestamp=datetime.now(timezone.utc),
             idempotency_key=str(uuid.uuid4()),
             item_id=item_id,

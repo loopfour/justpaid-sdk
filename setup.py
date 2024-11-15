@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="justpaid",
-    version="0.1.0",
+    version="0.1.2",
     author="JustPaid Development",
     author_email="engineering@justpaid.io",
     description="A Python SDK for the JustPaid API",
