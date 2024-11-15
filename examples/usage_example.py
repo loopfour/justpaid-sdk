@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import uuid
 
 # Initialize the API with your token
-api = JustPaidAPI(api_token="bk12MVBZMWRSdVJuN0M1Q2FzdnNmczRrMEJKNGV3VFpvSjU2WFIzcWsxbyA1OGNiZDEyMC03NGRlLTQ5MmItYjgwZi1hNGM1OTQ0Zjk0ZDg=")
+api = JustPaidAPI(api_token="YOUR_API_TOKEN")
 
 try:
     # Get billable items
