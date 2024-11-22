@@ -1,11 +1,16 @@
 from setuptools import setup, find_packages
+import os
+
+version = {}
+with open(os.path.join("src", "justpaid", "_version.py")) as f:
+    exec(f.read(), version)
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
     name="justpaid",
-    version="0.1.2",
+    version=version["__version__"],
     author="JustPaid Development",
     author_email="engineering@justpaid.io",
     description="A Python SDK for the JustPaid API",

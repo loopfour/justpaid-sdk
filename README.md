@@ -13,6 +13,8 @@ pip install justpaid
 ```python
 from justpaid import JustPaidAPI
 
+print(justpaid.__version__) # Should print "0.x.x"
+
 # Initialize the API client
 api = JustPaidAPI(api_token="your_api_token_here")
 
