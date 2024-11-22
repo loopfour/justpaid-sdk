@@ -16,8 +16,11 @@ from justpaid import JustPaidAPI
 # Initialize the API client
 api = JustPaidAPI(api_token="your_api_token_here")
 
-# Get billable items
-items = api.get_billable_items()
+# Get billable items by customer_id
+items = api.get_billable_items(customer_id="customer-123")
+
+# Or get billable items by external_customer_id
+items = api.get_billable_items(external_customer_id="ext-customer-123")
 
 print(items)
 ```

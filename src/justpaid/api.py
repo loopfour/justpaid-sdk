@@ -16,9 +16,14 @@ class JustPaidAPI:
             "Content-Type": "application/json"
         }
 
-    def get_billable_items(self, customer_id: Optional[str] = None) -> BillableItemsResponse:
+    def get_billable_items(self, customer_id: Optional[str] = None, external_customer_id: Optional[str] = None) -> BillableItemsResponse:
         url = f"{self.BASE_URL}/usage/items"
-        params = {"customer_id": customer_id} if customer_id else {}
+        params = {}
+        if customer_id:
+            params["customer_id"] = customer_id
+        if external_customer_id:
+            params["external_customer_id"] = external_customer_id
+        
         response = requests.get(url, headers=self.headers, params=params)
         
         if response.status_code != 200:
