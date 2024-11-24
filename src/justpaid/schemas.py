@@ -48,3 +48,20 @@ class BillableItemCustomer(BaseModel):
 
 class BillableItemsResponse(BaseModel):
     customers: List[BillableItemCustomer]
+
+
+
+class UsageEventAsyncResponse(BaseModel):
+    job_id: str = Field(..., description="The unique identifier for the job.")
+    status: str = Field(..., description="The status of the job.")
+    created_at: str = Field(..., description="The timestamp when the job was created.")
+    total_events: int = Field(..., description="The total number of events in the job.")
+
+class UsageDataBatchJobStatusResponse(BaseModel):
+    job_id: str = Field(..., description="The unique identifier for the job.")
+    status: str = Field(..., description="The status of the job.")
+    created_at: str = Field(..., description="The timestamp when the job was created.")
+    updated_at: str = Field(..., description="The timestamp when the job was last updated.")
+    info: Optional[EventInfo] = Field(None, description="Detailed information about the customer event ingestion process.")
+    errors: Optional[List[ErrorInfo]] = Field(None, description="A list of errors that occurred during the ingestion process.")
+    total_events: int = Field(..., description="The total number of events in the job.")

@@ -27,13 +27,13 @@ items = api.get_billable_items(external_customer_id="ext-customer-123")
 print(items)
 ```
 
-for more examples, see the [examples](examples/) directory.
+for more examples, see the [examples](https://github.com/loopfour/justpaid-python-sdk/tree/main/examples) directory.
 
 ## Features
 
 - Retrieve billable items
 - Ingest usage events
-- Batch ingest multiple usage events
+- Batch ingest multiple usage events asynchronously
 
 
 ## Documentation

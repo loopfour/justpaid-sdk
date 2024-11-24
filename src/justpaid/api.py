@@ -1,8 +1,8 @@
 import requests
 from typing import Optional
 from .schemas import (
-    BillableItem, BillableItemCustomer, UsageEventRequest, 
-    UsageEventResponse, BillableItemsResponse
+    BillableItem, BillableItemCustomer, UsageDataBatchJobStatusResponse, UsageEventRequest, 
+    UsageEventResponse, BillableItemsResponse, UsageEventAsyncResponse
 )
 from .exceptions import JustPaidAPIException
 
@@ -45,3 +45,27 @@ class JustPaidAPI:
             raise JustPaidAPIException(f"API request failed with status {response.status_code}: {response.text}")
         
         return UsageEventResponse(**response.json())
+    
+
+    def ingest_usage_events_async(self, payload: UsageEventRequest ) -> UsageEventResponse:
+        url = f"{self.BASE_URL}/usage/ingest-async"
+
+        response = requests.post(url, headers=self.headers, json=payload.dict())
+        
+        if response.status_code != 200:
+            raise JustPaidAPIException(f"API request failed with status {response.status_code}: {response.text}")
+        
+        return UsageEventAsyncResponse(**response.json())
+    
+
+    def get_usage_data_batch_job_status(self, job_id: str) -> UsageDataBatchJobStatusResponse:
+        url = f"{self.BASE_URL}/usage/job_status/{job_id}"
+
+        response = requests.get(url, headers=self.headers)
+        
+        if response.status_code != 200:
+            raise JustPaidAPIException(f"API request failed with status {response.status_code}: {response.text}")
+        
+        return UsageDataBatchJobStatusResponse(**response.json())
+        
+        
