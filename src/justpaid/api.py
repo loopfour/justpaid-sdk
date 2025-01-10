@@ -91,5 +91,41 @@ class JustPaidAPI:
 
         return UsageDataBatchJobStatusResponse(**response.json())
 
-        
-        
+    def get_invoices(
+        self,
+        invoice_status: Optional[str] = None,
+        customer: Optional[str] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+    ) -> InvoiceListResponse:
+        url = f"{self.BASE_URL}/invoice/"
+        params = {}
+        if invoice_status:
+            params["invoice_status"] = invoice_status
+        if customer:
+            params["customer"] = customer
+        if limit:
+            params["limit"] = limit
+        if offset:
+            params["offset"] = offset
+
+        response = requests.get(url, headers=self.headers, params=params)
+
+        if response.status_code != 200:
+            raise JustPaidAPIException(
+                f"API request failed with status {response.status_code}: {response.text}"
+            )
+
+        return InvoiceListResponse(**response.json())
+
+    def get_invoice(self, invoice_uuid: str) -> Invoice:
+        url = f"{self.BASE_URL}/invoice/{invoice_uuid}"
+
+        response = requests.get(url, headers=self.headers)
+
+        if response.status_code != 200:
+            raise JustPaidAPIException(
+                f"API request failed with status {response.status_code}: {response.text}"
+            )
+
+        return Invoice(**response.json())

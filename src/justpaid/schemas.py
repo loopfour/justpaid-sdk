@@ -124,3 +124,89 @@ class UsageDataBatchJobStatusResponse(BaseModel):
         None, description="A list of errors that occurred during the ingestion process."
     )
     total_events: int = Field(..., description="The total number of events in the job.")
+
+
+class InvoiceCustomer(BaseModel):
+    external_id: Optional[str] = Field(
+        None,
+        description="An optional external identifier for the customer. This can be used to link the customer to an external system.",
+    )
+    uuid: str = Field(..., description="The unique identifier for the customer")
+    name: Optional[str] = Field(None, description="Customer name")
+    contact_name: Optional[str] = Field(
+        None, description="The name of the contact person"
+    )
+    email: Optional[str] = Field(None, description="Customer email")
+    additional_emails: Optional[list[str]] = Field(
+        None, description="A list of additional customer email addresses"
+    )
+    billing_emails: Optional[list[str]] = Field(
+        None, description="Billing email addresses"
+    )
+    phone_number: Optional[str] = Field(
+        None, description="Customer phone number with country code"
+    )
+    currency: Optional[str] = Field(None, description="Customer currency")
+    tax_id: Optional[str] = Field(None, description="Customer tax id")
+
+
+class InvoiceInvoiceLineItem(BaseModel):
+    name: str = Field(..., description="The name of the line item")
+    unit_price: float = Field(..., description="The price per unit for this line item")
+    quantity: float = Field(..., description="The quantity of units for this line item")
+    amount: float = Field(
+        ..., description="The total amount for this line item (unit_price * quantity)"
+    )
+    currency: str = Field(..., description="The currency code for this line item")
+    description: Optional[str] = Field(
+        None, description="Additional details about the line item"
+    )
+
+
+class Invoice(BaseModel):
+    uuid: str = Field(..., description="The unique identifier for the invoice")
+    invoice_status: str = Field(..., description="The current status of the invoice")
+    amount: float = Field(..., description="The total amount due for the invoice")
+    currency: str = Field(..., description="The currency code for the invoice")
+    invoice_number: str = Field(..., description="The unique invoice number")
+    invoice_date: str = Field(..., description="The date when the invoice was created")
+    due_date: Optional[str] = Field(
+        None, description="The date by which the invoice must be paid"
+    )
+    service_start_date: Optional[str] = Field(
+        None, description="The start date of the service period"
+    )
+    service_end_date: Optional[str] = Field(
+        None, description="The end date of the service period"
+    )
+    description: Optional[str] = Field(None, description="A description of the invoice")
+    created_at: str = Field(
+        ..., description="The timestamp when the invoice was created"
+    )
+    is_recurring: bool = Field(
+        ..., description="Indicates if this is a recurring invoice"
+    )
+    from_external_source: bool = Field(
+        ..., description="Indicates if the invoice was created from an external source"
+    )
+    external_source: Optional[str] = Field(
+        None, description="The name of the external source if applicable"
+    )
+    external_source_id: Optional[str] = Field(
+        None, description="The ID of the invoice in the external system"
+    )
+    payment_link: Optional[str] = Field(
+        None, description="URL where the customer can pay this invoice"
+    )
+    line_items: list[InvoiceInvoiceLineItem] = Field(
+        ..., description="List of line items included in this invoice"
+    )
+    file_url: Optional[str] = Field(None, description="URL to download the invoice PDF")
+    customer: Optional[InvoiceCustomer] = Field(
+        None, description="Details of the customer associated with this invoice"
+    )
+
+
+class InvoiceListResponse(BaseModel):
+    items: list[Invoice]
+    count: int = Field(..., description="The total number of invoices")
