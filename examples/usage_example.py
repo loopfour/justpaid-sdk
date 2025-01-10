@@ -1,13 +1,13 @@
+import itertools
 import random
-from justpaid.api import JustPaidAPI
-from justpaid.schemas import UsageEvent, UsageEventRequest
-from justpaid.exceptions import JustPaidAPIException
-
-from datetime import datetime, timedelta, timezone
+import sys
 import time
 import uuid
-import sys
-import itertools
+from datetime import datetime, timedelta, timezone
+
+from justpaid.api import JustPaidAPI
+from justpaid.exceptions import JustPaidAPIException
+from justpaid.schemas import UsageEvent, UsageEventRequest
 
 # Initialize the API with your token
 api = JustPaidAPI(api_token="YOUR_API_TOKEN")
@@ -22,10 +22,13 @@ def get_all_billable_items():
     except JustPaidAPIException as e:
         print(f"An error occurred: {str(e)}")
 
+
 def get_billable_items_by_external_customer_id(external_customer_id: str):
     try:
         # Get billable items by external customer ID
-        billable_items_response = api.get_billable_items(external_customer_id=external_customer_id)
+        billable_items_response = api.get_billable_items(
+            external_customer_id=external_customer_id
+        )
         print("Billable Items:")
         print(billable_items_response.customers[0])
 
@@ -54,12 +57,12 @@ def ingest_usage_events_async(usage_events):
         start_time = time.time()
 
         # Show a loading icon while polling job status
-        spinner = itertools.cycle(['|', '/', '-', '\\'])
+        spinner = itertools.cycle(["|", "/", "-", "\\"])
 
         # Poll the job status until it is complete
         job_status = api.get_usage_data_batch_job_status(response.job_id)
         while job_status.status not in ["SUCCESS", "FAILED"]:
-            sys.stdout.write('\rProcessing ' + next(spinner))
+            sys.stdout.write("\rProcessing " + next(spinner))
             sys.stdout.flush()
             time.sleep(0.1)
             job_status = api.get_usage_data_batch_job_status(response.job_id)
@@ -69,7 +72,7 @@ def ingest_usage_events_async(usage_events):
         processing_time = end_time - start_time
 
         # Clear the loading icon
-        sys.stdout.write('\r')
+        sys.stdout.write("\r")
         sys.stdout.flush()
 
         # Check final job status
@@ -96,7 +99,6 @@ def ingest_usage_events_async(usage_events):
         print(f"An error occurred during ingestion: {str(e)}")
 
 
-
 if __name__ == "__main__":
     usage_events = []
     for i in range(3000):
@@ -108,14 +110,9 @@ if __name__ == "__main__":
             idempotency_key=str(uuid.uuid4()),
             timestamp=timestamp,
             event_value=1,
-            properties={
-                "test": "test"
-            }
+            properties={"test": "test"},
         )
         usage_events.append(usage_event)
 
     # Call the separate method to ingest usage events asynchronously
     ingest_usage_events_async(usage_events)
-
-          
-
